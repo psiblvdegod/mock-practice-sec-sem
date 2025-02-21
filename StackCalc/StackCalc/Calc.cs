@@ -23,7 +23,7 @@ public class Calc
     /// <returns>Evaluation result.</returns>
     public double Evaluate(string input)
     {
-        var tokens = input.Split(' ');
+        var tokens = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var token in tokens)
         {
@@ -57,6 +57,11 @@ public class Calc
         var (result, isError2) = stack.Pop();
 
         if (isError2)
+        {
+            throw new();
+        }
+
+        if (!stack.IsEmpty)
         {
             throw new();
         }

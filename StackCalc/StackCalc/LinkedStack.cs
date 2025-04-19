@@ -1,41 +1,31 @@
 namespace StackCalc;
 
 /// <inheritdoc/>
-public class LinkedStack : IStack
+public class LinkedStack<T> : IStack<T>
 {
     private Element? head;
 
     /// <inheritdoc/>
-    public bool IsEmpty => head == null;
+    public bool IsEmpty
+        => head is null;
 
     /// <inheritdoc/>
-    public void Push(double item)
+    public void Push(T item)
         => head = new(item, head);
 
     /// <inheritdoc/>
-    public (double Value, bool IsError) Pop()
+    public T Pop()
     {
-        if (head == null)
+        if (head is null)
         {
-            return (0, true);
+            throw new InvalidOperationException("Stack is empty");
         }
 
         var value = head.Value;
         head = head.Next;
 
-        return (value, false);
+        return value;
     }
 
-    private class Element
-    {
-        public Element(double value, Element? next)
-        {
-            Value = value;
-            Next = next;
-        }
-
-        public double Value { get; }
-
-        public Element? Next { get; }
-    }
+    private record Element(T Value, Element? Next);
 }

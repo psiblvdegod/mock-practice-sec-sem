@@ -1,18 +1,20 @@
 namespace StackCalc;
 
 /// <inheritdoc/>
-public class ArrayStack : IStack
+public class ArrayStack<T> : IStack<T>
 {
-    private double[] array = new double[8];
+    private T?[] array = new T[8];
     private int head = -1;
 
     /// <inheritdoc/>
-    public bool IsEmpty => this.head == -1;
+    public bool IsEmpty
+        => this.head == -1;
 
     /// <inheritdoc/>
-    public void Push(double value)
+    public void Push(T value)
     {
-        this.head++;
+        ++this.head;
+
         if (this.head >= this.array.Length)
         {
             Array.Resize(ref this.array, this.array.Length * 2);
@@ -22,15 +24,17 @@ public class ArrayStack : IStack
     }
 
     /// <inheritdoc/>
-    public (double Value, bool IsError) Pop()
+    public T Pop()
     {
         if (this.head == -1)
         {
-            return (0, true);
+            throw new InvalidOperationException("Stack is empty.");
         }
 
-        double value = this.array[this.head];
-        this.head--;
-        return (value, false);
+        T value = this.array[this.head] ?? throw new InvalidOperationException();
+        this.array[this.head] = default;
+        --this.head;
+
+        return value;
     }
 }

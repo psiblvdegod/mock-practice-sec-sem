@@ -1,1 +1,1 @@
-# Repository with practice tasks from second semester
+### repo with mock objects practice task

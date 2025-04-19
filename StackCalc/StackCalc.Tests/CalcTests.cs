@@ -1,5 +1,7 @@
 namespace StackCalc.Tests;
 
+using Moq;
+
 public class CalcTests
 {
     private static readonly (string Input, double Result)[] TestData =
@@ -24,7 +26,7 @@ public class CalcTests
     [SetUp]
     public void Setup()
     {
-        calc = new(new ArrayStack());
+        calc = new(new ArrayStack<double>());
     }
 
     [Test]
@@ -34,8 +36,8 @@ public class CalcTests
     }
 
     [Test]
-    public void Calc_Evaluate_Throws([ValueSource(nameof(IncorrectInputs))] string input)
+    public void Calc_Evaluate_OnIncorrectInput_ShouldThrowException([ValueSource(nameof(IncorrectInputs))] string input)
     {
-        Assert.Throws<Exception>(() => calc.Evaluate(input));
+        Assert.Throws<ArgumentException>(() => calc.Evaluate(input));
     }
 }
